@@ -1,1 +1,1 @@
-# Recognize-the-Arabic-letters
+# Recognize-Arabic-letters
