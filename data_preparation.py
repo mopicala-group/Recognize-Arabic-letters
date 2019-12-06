@@ -12,23 +12,27 @@ data_in = 'data_arabic'
 def load_image_porc(img=None):
     img = cv2.imread(img)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    ret, gray = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
-    conv = cv2.resize(gray, (image_size, image_size))
-    flo = conv.astype(float)
-    return flo
+    ret, thresh = cv2.threshold(gray, 120, 255, cv2.THRESH_BINARY)
+    resized = cv2.resize(thresh, (image_size, image_size))
+    re_shape = resized.reshape((1,image_size* image_size))
+    return re_shape
 
 
 def porc_data_nasser(file_data):
     df = pd.read_csv(file_data)
-    images = []
+    images = np.empty((0,image_size *image_size))
     lables = []
     for data in df.values:
         Name_of_dir = data[0]
         path_of_image = data[1]
-        ret_img = load_image_porc(img=path_of_image)
-        images.append(ret_img)
+        img=cv2.imread(path_of_image)
+        ret_img = load_image_porc(img=img)
+        images=np.append(images, ret_img, 0)
         lables.append(Name_of_dir)
     print("step(porc_data) is -[done]")
+    images = np.array(images, np.float32)
+    lables = np.array(lables, np.float32)
+    lables = lables.reshape((lables.size, 1))
     return images, lables
 
 if __name__ == '__main__':
