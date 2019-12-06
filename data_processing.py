@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from getting_data_to_csv import gen_bana_data
 import os
 import cv2
 import csv
