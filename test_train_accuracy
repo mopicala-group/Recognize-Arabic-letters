@@ -1,0 +1,118 @@
+import csv
+import os
+import re
+from os import listdir
+from os.path import isdir, join
+
+import cv2
+import numpy as np
+import pandas as pd
+
+file_data = r'F:\MY_WORK\letters_numbers_train\__.csv'
+image_size = 64
+data_in = 'data_arabic'
+
+from sklearn.preprocessing import LabelBinarizer
+global laab
+laab = LabelBinarizer()
+
+print(laab)
+def image_files_in_folder(folder):
+    return [os.path.join(folder, f) for f in os.listdir(folder) if
+            re.match(r'.*\.(jpg|jpeg|png|bmp)', f, flags=re.I)]
+
+
+def gen_bana_data(data_input, data_output):
+    for X in listdir(data_input):
+        join(data_input, X)
+
+    with open(data_output, 'w', newline='') as file1:
+        writer = csv.writer(file1)
+        writer.writerow(["Name_of_dir", "path_of_image"])
+        for sub_dir in listdir(data_input):
+            a = join(data_input, sub_dir)
+            if not isdir(join(data_input, sub_dir)):
+                continue
+            name_of_dir = sub_dir
+            for img_path in image_files_in_folder(join(data_input, sub_dir)):
+                writer.writerow(['b' + str(name_of_dir), img_path])
+                image = cv2.imread(img_path)
+                if image is None:
+                    print("Error")
+                    continue
+    print("step(gen_bana_data) is -[done]")
+
+
+def load_image_porc(img=None):
+    img = cv2.imread(img)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    ret, gray = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
+    conv = cv2.resize(gray, (image_size, image_size))
+    re_shape = conv.reshape((1, image_size * image_size))
+    return re_shape
+
+
+def porc_data(file_data):
+    df = pd.read_csv(file_data)
+    images = np.empty((0, image_size * image_size))
+    lables = []
+    for data in df.values:
+        Name_of_dir = data[0]
+        path_of_image = data[1]
+        ret_img = load_image_porc(img=path_of_image)
+        images = np.append(images, ret_img, 0)
+        lables.append(Name_of_dir)
+
+    images = np.array(images, np.float32)
+    print("step(porc_data) is -[done]")
+    return images, lables
+
+
+
+
+
+############################################1
+# transform label to binary
+def lbi(y):
+    lb = laab
+    return lb, lb.fit_transform(y)
+###################################2
+# split dataset ,val = amount data test (val = 0.3 -> data_traint = (1-0.3)
+def split_t(X, Y, val):
+    partition = int(val * len(Y))
+    X_train, X_test = np.split(X, [partition])
+    y_train, y_test = np.split(Y, [partition])
+    return X_train, y_train, X_test, y_test
+###################################################4
+# get inverse  y & res and return acc %variable%
+def get_acc(lb, res, y):
+    y = lb.inverse_transform(y)
+    res = lb.inverse_transform(res)
+    accuracy = (np.squeeze(res) == y).mean()
+    return accuracy * 100
+#############################################
+# check acc train & acc test 
+def accuracy(Xtrain, Xtest):
+    ret, resultA, neig, dist = KNearest.findNearest(Xtrain, k=5)
+    ret, resultB, neig, dist = KNearest.findNearest(Xtest, k=5)
+    acc_train = get_acc(lbtr, resultA, Ytrain)
+    acc_test = get_acc(lbts, resultB, Ytest)
+    print("acc-> train:{} : and test:{}".format(acc_train, acc_test))
+    return acc_train,acc_test
+
+##################################################3
+# train all data 
+def train(X, y):
+#    Xtrain, Ytrain, Xtest, Ytest = split_t(X, y, 0.01)
+#    lbtr, Ytrain = lbi(Ytrain)
+#   lbts, Ytest = lbi(Ytest)
+    f = lbi(y)
+    knn = cv2.ml.KNearest_create()
+    knn.train(X,cv2.ml.ROW_SAMPLE, f)
+    print('oooooooooooooo')
+    return knn
+###########################################################5
+# if __name__ == '__main__':
+gen_bana_data(data_in, file_data)  # get Bayan T data &names as csv
+x, y = porc_data(file_data)  # get Processing in data conv to x,y
+train(x, y)
