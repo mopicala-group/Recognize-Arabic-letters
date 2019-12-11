@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 import pandas as pd
 from getting_data_to_csv import gen_bana_data
-from data_processing import porc_data
+from data_processing import porc_data_nasser
 
 global laab
 laab = LabelBinarizer()
@@ -58,6 +58,6 @@ def train(X, y):
     return knn
 ###########################################################5
 if __name__ == '__main__':
-gen_bana_data(data_in, file_data)  # get Bayan T data &names as csv
-x, y = porc_data(file_data)  # get Processing in data conv to x,y
-train(x, y)
+   gen_bana_data(data_in, file_data)  # get Bayan T data &names as csv
+   x, y = porc_data_nasser  # get Processing in data conv to x,y
+   train(x, y)
