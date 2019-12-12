@@ -1,20 +1,16 @@
-import csv
-import os
-import re
-from os import listdir
-from os.path import isdir, join
-from sklearn.preprocessing import LabelBinarizer
 import cv2
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import LabelBinarizer
 from getting_data_to_csv import gen_bana_data
 from data_processing import porc_data_nasser
-global laab
-laab = LabelBinarizer()
 
+#---Variables---#
 file_data = r'F:\MY_WORK\letters_numbers_train\__.csv'
 image_size = 64
 data_in = 'data_arabic'
+global laab
+laab = LabelBinarizer()
 #-------------------------#
 # transform label to binary
 def lbi(y):
@@ -53,6 +49,6 @@ def train(X, y):
     return knn
 
 if __name__ == '__main__':
-   gen_bana_data(data_in, file_data)     # get Bayan T data &names as csv
-   x, y = porc_data_nasser(file_data)    # get Processing in data conv to x,y
+   gen_bana_data(data_in, file_data)   # get Bayan T data &names as csv
+   x, y = porc_data_nasser(file_data)  # get Processing in data conv to x,y
    train(x, y)
