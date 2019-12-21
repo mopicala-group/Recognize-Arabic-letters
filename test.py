@@ -8,8 +8,8 @@ import numpy as np
 import pandas as pd
 import time
 import getting_data_to_csv as gtd
-import data_processing_new as dp
-import test_train_accuracy_new as tta
+import data_processing as dp
+import test_train_accuracy as tta
 
 
 image_size = 64
