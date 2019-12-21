@@ -14,7 +14,7 @@ import test_train_accuracy_new as tta
 
 image_size = 64
 csv_file='csv_output_file.csv'
-data_input='cut_images' # عم اخد الصور المقصوصة وحطن بالمجلد هاد
+data_input='cut_images' 
 data_in1='image'
 data_in = r'E:\PycharmProjects\letters_numbers_train\cut_images\image'
 dc={}
@@ -60,7 +60,7 @@ def process_cut_data(data):
 
 img='E:\PycharmProjects\letters_numbers_train\1_52'
 
-def test(KNearest,img):   
+def test(KNearest,img):  
 
     lb2 = b.inverse_Transform(c)
     for tt in range (len(c)):
