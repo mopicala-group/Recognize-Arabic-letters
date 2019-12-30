@@ -12,18 +12,18 @@ file_data = 'pathes and classes name.csv'
 image_size = 64
 data_in = 'data_arabic'
 
-#this fiunction to return only the files with (jpg , jpeg , png , bmp ) extensions
+#this function to return only the files with (jpg , jpeg , png , bmp ) extensions
 def image_files_in_folder(folder):
         return [os.path.join(folder, f) for f in os.listdir(folder) if
                 re.match(r'.*\.(jpg|jpeg|png|bmp)', f, flags=re.I)]
                 
 def gen_bana_data(data_input ,data_output):
     
-#getting all the folders which existes in this path 
+#getting all the folders which exist in this path 
     for x in listdir(data_input):
         join(data_input, x)
 
-#open csv file and writing the names of folders to it
+#open an csv file and writing the names of folders to it
     with open(data_output, 'w', newline='') as file1:
         writer = csv.writer(file1)
         writer.writerow(["Name_of_dir", "path_of_image"])
