@@ -21,21 +21,22 @@ dc={}
 
 
 
-
+#to return only the files with (jpg|jpeg|png|bmp) extensions
 def image_files_in_folder(folder):
     return [os.path.join(folder, f) for f in os.listdir(folder) if
             re.match(r'.*\.(jpg|jpeg|png|bmp)', f, flags=re.I)]
 
 def write_images_to_csv():
    for x in listdir(data_input):
-        join(data_input, x)
+        join(data_input, x)   #merging the path of folder with its root 
 
+#writing name of images to csv file
    with open(csv_file, 'w', newline='') as file1:
         writer = csv.writer(file1)
         writer.writerow(["Name_of_image"])
         for sub_dir in listdir(data_input):
             a = join(data_input, sub_dir)
-            if not isdir(join(data_input, sub_dir)):
+            if not isdir(join(data_input, sub_dir)): #checking of path validation
                 continue
             name_of_dir = sub_dir
             i=1
@@ -43,11 +44,12 @@ def write_images_to_csv():
                 writer.writerow(['b' +str(i)])
                 image = cv2.imread(img_path)
                 i=i+1
-                if image is None:
+                if image is None:   # checking of images validation
                     print("Error")
                     continue
         print("step(gen_bana_data) is -[done]")
-
+        
+ #loading images , resizing them and convert their arrays to float  
 def process_cut_data(data):
     ret_img = dp.load_image_porc(data_in)
     for x in ret_img:
@@ -61,7 +63,7 @@ def process_cut_data(data):
 img='E:\PycharmProjects\letters_numbers_train\1_52'
 
 def test(KNearest,img):  
-
+#processing the names of images which are string to binary
     lb2 = b.inverse_Transform(c)
     for tt in range (len(c)):
         dc[str(c[tt].tolist())] = lb2[tt]
@@ -70,6 +72,7 @@ def test(KNearest,img):
         img = dp.load_image_porc(img=img)
         g=cv2.imread(img)
         img=np.float32(img)
+#getting the letter which corresponds with image
         ret, resultA, neig, dist = KNearest.findNearest(img, k=1)
         res=int(resultA[0][0])
         return res
